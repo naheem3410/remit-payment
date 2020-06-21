@@ -2,5 +2,10 @@
 	"name": "remit-payment",
 	"version": "0.0.1",
 	"description": "Remit payments made by customers using Paystack",
-	"dependencies": {}
+	"engines": {
+    "node": "12.x"
+  },
+	"dependencies": {
+		
+	}
 }
