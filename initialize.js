@@ -3,6 +3,7 @@
 var http = require('http');
 var https = require('https');
 var url = require('url');
+const PORT = process.env.PORT || 5000
 var post;
 var data='';
 //make a server
@@ -38,7 +39,7 @@ var server = http.createServer(function(req,res){
 	res.end(JSON.stringify({"error":"MALFORMED URL"}));
 	}
 	
-	}).listen(8000);
+	}).listen(PORT);
 
 //make decision based on the request method
 function decide(req,res,pathName){
