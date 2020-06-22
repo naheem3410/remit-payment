@@ -5,6 +5,10 @@
 	"engines": {
     "node": "12.x"
   },
+	 "main": "initialize.js",
+  "scripts": {
+    "start": "node initialize.js"
+  },
 	"dependencies": {
 		
 	}
