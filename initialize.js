@@ -5,6 +5,7 @@ var https = require('https');
 var url = require('url');
 const PORT = process.env.PORT || 5000
 var post;
+var verifyPath;
 var data='';
 //make a server
 var server = http.createServer(function(req,res){
@@ -35,6 +36,13 @@ var server = http.createServer(function(req,res){
 	console.log(post);
 	decide(req,res,pathName);
 	}
+	else if(pathName.indexOf("/verify") == 0){
+		console.log("EnteredVerify");
+		console.log(pathName);
+		verifyPath = pathName;
+		decide(req,res,pathName);
+
+	}
 	else{
 	res.end(JSON.stringify({"error":"MALFORMED URL"}));
 	}
@@ -56,8 +64,10 @@ function decide(req,res,pathName){
 //make decision based on the request url
 function decidePath(pathName,res){
 	switch(pathName){
-	case '/': initializeTransaction(res);
+	case '/initialize': initializeTransaction(res);
 	break;
+	case verifyPath: verifyTransaction(res,pathName);
+	break;		
 	default:res.end(JSON.stringify({"error":"PATH NOT SUPPORTED"}));
 	break;
 
@@ -104,6 +114,40 @@ req.end();
 
 }
 
+//make request to Paystack to verify a transaction
+function verifyTransaction(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"GET",
+  headers: {
+    'Authorization':'Bearer sk_live_5e1de86d5451368286667cedbc7e87dc9e80651d'
+  }
+};
 
+const req = https.request('https://api.paystack.co/transaction'+pathName,options, (res) => {
+  data = "";
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+req.end();
+
+
+
+}
 
 
