@@ -120,7 +120,7 @@ function verifyTransaction(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_live_5e1de86d5451368286667cedbc7e87dc9e80651d'
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
   }
 };
 
