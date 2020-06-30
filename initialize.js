@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5000
 var post;
 var verifyPath;
 var data='';
+var bankListPath;
 //make a server
 var server = http.createServer(function(req,res){
 	console.log(req.url);
@@ -20,7 +21,10 @@ var server = http.createServer(function(req,res){
 	console.log(query);
 	//continue if query can be splitted
 	if(query != null){
-	//split the query string
+	//if pathName is /initialize, then queries are passed into json string
+	//else if pathName is banklist, queries are not passed into json string but used like that
+	if(pathName.indexOf("/initialize") == 0){
+		//split the query string
 	var querySplitted = query.split('&');
 	console.log(querySplitted);
 	//object to store the queries as a key-value pairs
@@ -35,6 +39,12 @@ var server = http.createServer(function(req,res){
 	post = JSON.stringify(store);
 	console.log(post);
 	decide(req,res,pathName);
+	}
+	else{//if pathName is /banklist
+		bankListPath = parsed.path
+		console.log(bankListPath)
+		decide(req,res,pathName);
+	}
 	}
 	else if(pathName.indexOf("/verify") == 0){
 		console.log("EnteredVerify");
@@ -67,7 +77,9 @@ function decidePath(pathName,res){
 	case '/initialize': initializeTransaction(res);
 	break;
 	case verifyPath: verifyTransaction(res,pathName);
-	break;		
+	break;	
+	case '/bank': listBank(res,pathName);
+	break;
 	default:res.end(JSON.stringify({"error":"PATH NOT SUPPORTED"}));
 	break;
 
@@ -126,6 +138,42 @@ function verifyTransaction(response,pathName){
 
 const req = https.request('https://api.paystack.co/transaction'+pathName,options, (res) => {
   data = "";
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+req.end();
+
+
+
+}
+//make request to Paystack to get the list of banks that accept payment using bank account
+function listBank(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"GET",
+  headers: {
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
+
+const req = https.request('https://api.paystack.co'+bankListPath,options, (res) => {
+  data = "";
+  console.log('https://api.paystack.co'+bankListPath);
   console.log(`STATUS: ${res.statusCode}`);
   console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
   //res.setEncoding('utf8');
