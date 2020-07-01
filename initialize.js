@@ -8,6 +8,7 @@ var post;
 var verifyPath;
 var data='';
 var bankListPath;
+var verifyAccountPath;
 //make a server
 var server = http.createServer(function(req,res){
 	console.log(req.url);
@@ -23,7 +24,7 @@ var server = http.createServer(function(req,res){
 	if(query != null){
 	//if pathName is /initialize, then queries are passed into json string
 	//else if pathName is banklist, queries are not passed into json string but used like that
-	if(pathName.indexOf("/initialize") == 0){
+	if(pathName == "/initialize"){
 		//split the query string
 	var querySplitted = query.split('&');
 	console.log(querySplitted);
@@ -40,13 +41,22 @@ var server = http.createServer(function(req,res){
 	console.log(post);
 	decide(req,res,pathName);
 	}
-	else{//if pathName is /banklist
+	else if(pathName == "/bank"){//if pathName is /banklist
 		bankListPath = parsed.path
 		console.log(bankListPath)
 		decide(req,res,pathName);
 	}
+	else if(pathName == "/bank/resolve"){//if pathName is /bank/resolve
+		verifyAccountPath = parsed.path
+		console.log(verifyAccountPath)
+		decide(req,res,pathName);
 	}
-	else if(pathName.indexOf("/verify") == 0){
+	else{
+		res.end(JSON.stringify({"error":"PATH UNKNOWN"}));
+
+	}
+	}
+	else if(pathName == "/verify"){
 		console.log("EnteredVerify");
 		console.log(pathName);
 		verifyPath = pathName;
@@ -79,6 +89,8 @@ function decidePath(pathName,res){
 	case verifyPath: verifyTransaction(res,pathName);
 	break;	
 	case '/bank': listBank(res,pathName);
+	break;
+	case '/bank/resolve': verifyAccount(res,pathName);
 	break;
 	default:res.end(JSON.stringify({"error":"PATH NOT SUPPORTED"}));
 	break;
@@ -198,4 +210,40 @@ req.end();
 
 }
 
+//make request to Paystack to verify the account number
+function verifyAccount(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"GET",
+  headers: {
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
 
+const req = https.request('https://api.paystack.co'+verifyAccountPath,options, (res) => {
+  data = "";
+  
+  console.log('https://api.paystack.co'+verifyAccountPath);
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+req.end();
+
+
+
+}
