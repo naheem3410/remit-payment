@@ -9,6 +9,7 @@ var verifyPath;
 var data='';
 var bankListPath;
 var verifyAccountPath;
+var chargeData='';
 //make a server
 var server = http.createServer(function(req,res){
 	console.log(req.url);
@@ -50,6 +51,19 @@ var server = http.createServer(function(req,res){
 		verifyAccountPath = parsed.path
 		console.log(verifyAccountPath)
 		decide(req,res,pathName);
+	}
+	else if(pathName == "/charge"){
+  		req.on('data', (chunk) => {
+    		chargeData += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+chargeData);
+    		res.end(chargeData);
+   
+  		});
+
 	}
 	else{
 		res.end(JSON.stringify({"error":"PATH UNKNOWN"}));
@@ -242,6 +256,45 @@ req.on('error', (e) => {
   console.error(`problem with request: ${e.message}`);
 });
 
+req.end();
+
+
+
+}
+//make request to Paystack to charge via bank account
+function chargeBankAccount(response,pathName){
+
+//options will be passed to the https instance
+	const options = {
+  method:"POST",
+  headers: {
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
+
+const req = https.request('https://api.paystack.co/charge',options, (res) => {
+  data = "";
+  
+  console.log('https://api.paystack.co/charge');
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+// Write data to request body
+req.write(chargeData);
 req.end();
 
 
