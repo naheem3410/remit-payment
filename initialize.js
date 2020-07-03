@@ -42,15 +42,29 @@ var server = http.createServer(function(req,res){
 	console.log(post);
 	decide(req,res,pathName);
 	}
-	else if(pathName == "/bank"){//if pathName is /banklist
+	else if(pathName == "/bank"){//if pathName is /bank
 		bankListPath = parsed.path
 		console.log(bankListPath)
+		console.log('SSSTTTTT '+verifyAccountPath);
 		decide(req,res,pathName);
 	}
 	else if(pathName == "/bank/resolve"){//if pathName is /bank/resolve
 		verifyAccountPath = parsed.path
 		console.log(verifyAccountPath)
+		console.log('INN OOORRR '+verifyAccountPath);
 		decide(req,res,pathName);
+	}
+	else{
+		res.end(JSON.stringify({"error":"PATH UNKNOWN"}));
+
+	}
+	}	
+	else if(pathName == "/verify"){
+		console.log("EnteredVerify");
+		console.log(pathName);
+		verifyPath = pathName;
+		decide(req,res,pathName);
+
 	}
 	else if(pathName == "/charge"){
   		req.on('data', (chunk) => {
@@ -66,21 +80,8 @@ var server = http.createServer(function(req,res){
 
 	}
 	else{
-		res.end(JSON.stringify({"error":"PATH UNKNOWN"}));
-
-	}
-	}
-	else if(pathName == "/verify"){
-		console.log("EnteredVerify");
-		console.log(pathName);
-		verifyPath = pathName;
-		decide(req,res,pathName);
-
-	}
-	else{
 	res.end(JSON.stringify({"error":"MALFORMED URL"}));
-	}
-	
+	}	
 	}).listen(PORT);
 
 //make decision based on the request method
