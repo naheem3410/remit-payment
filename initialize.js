@@ -237,7 +237,8 @@ function verifyAccount(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Content-Type':'application/json'
   }
 };
 
