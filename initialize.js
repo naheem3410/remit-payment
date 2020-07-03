@@ -90,6 +90,8 @@ function decide(req,res,pathName){
 	switch(req.method){
 	case 'GET':decidePath(pathName,res);
 	break;
+	case 'POST':decidePath(pathName,res);
+	break;
 	default:res.end(JSON.stringify({"error":"METHOD NOT SUPPORTED"}));
 	break;
 
