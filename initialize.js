@@ -67,6 +67,7 @@ var server = http.createServer(function(req,res){
 
 	}
 	else if(pathName == "/charge"){
+		chargeData = ''
   		req.on('data', (chunk) => {
     		chargeData += chunk;
     		console.log(`BODY: ${data}`);
