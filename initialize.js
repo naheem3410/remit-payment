@@ -74,7 +74,8 @@ var server = http.createServer(function(req,res){
   		req.on('end', () => {
     		console.log('No more data in request.');
 		console.log("CONSOLE ADD "+chargeData);
-    		res.end(chargeData);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
    
   		});
 
@@ -106,6 +107,8 @@ function decidePath(pathName,res){
 	case '/bank': listBank(res,pathName);
 	break;
 	case '/bank/resolve': verifyAccount(res,pathName);
+	break;
+	case '/charge': chargeBankAccount(res,pathName);
 	break;
 	default:res.end(JSON.stringify({"error":"PATH NOT SUPPORTED"}));
 	break;
