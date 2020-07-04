@@ -90,11 +90,7 @@ var server = http.createServer(function(req,res){
 	else if(pathName.indexOf("/charge/") == 0){
 		console.log("EnteredPathVerify");
 		console.log(pathName);
-		pendingPath = pathName;
-		decide(req,res,pathName);
-
-	}
-	else if(pathName == "/charge/submit_otp"){
+		if(pathName == "/charge/submit_otp"){
 		jsonOTP = '';
 		
 		console.log("OOTP"+pathName);
@@ -109,6 +105,11 @@ var server = http.createServer(function(req,res){
     		//res.end(chargeData);
    
   		});
+		}else{
+		pendingPath = pathName;
+		decide(req,res,pathName);
+		}
+
 	}
 	else if(pathName == "/charge/submit_pin"){
 		jsonPin = '';
