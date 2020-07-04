@@ -61,11 +61,11 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
 	}
 	else{
-		res.end(JSON.stringify({"error":"PATH UNKNOWN"}));
+		res.end(JSON.stringify({"status":false,"message":"PATH UNKNOWN"}));
 
 	}
 	}	
-	else if(pathName == "/verify"){
+	else if(pathName.indexOf("/verify/") == 0){
 		console.log("EnteredVerify");
 		console.log(pathName);
 		verifyPath = pathName;
