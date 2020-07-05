@@ -190,8 +190,10 @@ var server = http.createServer(function(req,res){
 		if(req.method == "GET"){
 		fetchCustomerPath = pathName;
 		decide(req,res,pathName);
+		console.log('GETPARTR');
 		}
-		else if(req.method == "PUT"){
+		else if(req.method == "POST"){
+		console.log('POSTPARTR');
 		updateCustomerVar = '';
 		updateCustomerPath = pathName;
 		console.log("CustomerUpdate"+updateCustomerVar);
