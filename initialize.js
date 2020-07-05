@@ -158,6 +158,7 @@ var server = http.createServer(function(req,res){
    
   		});
 	}
+		//for checking Pending
 		else{
 		pendingPath = pathName;
 		decide(req,res,pathName);
