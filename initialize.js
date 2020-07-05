@@ -16,6 +16,10 @@ var jsonOTP;
 var jsonPin;
 var jsonBirthday;
 var jsonPhone;
+var createCustomerVar;
+var updateCustomerVar;
+var fetchCustomerPath;
+var updateCustomerPath;
 //make a server
 var server = http.createServer(function(req,res){
 	console.log(req.url);
@@ -81,6 +85,21 @@ var server = http.createServer(function(req,res){
   		req.on('end', () => {
     		console.log('No more data in request.');
 		console.log("CONSOLE ADD "+chargeData);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
+   
+  		});
+
+	}
+	else if(pathName == "/customer"){
+		createCustomerVar = ''
+  		req.on('data', (chunk) => {
+    		createCustomerVar += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+createCustomerVar);
 		decide(req,res,pathName);
     		//res.end(chargeData);
    
@@ -165,6 +184,30 @@ var server = http.createServer(function(req,res){
 		}
 
 	}
+	else if(pathName.indexOf("/customer/") == 0){
+		console.log("EnteredPathCustomer");
+		console.log(pathName);
+		if(req.method == "GET"){
+		fetchCustomerPath = pathName;
+		decide(req,res,pathName);
+		}
+		else if(req.method == "PUT"){
+		updateCustomerVar = '';
+		updateCustomerPath = pathName;
+		console.log("CustomerUpdate"+updateCustomerVar);
+		req.on('data', (chunk) => {
+    		updateCustomerVar += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+updateCustomerVar);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
+   
+  		});
+		}
+		}
 	else{
 	res.end(JSON.stringify({"status":false,"message":"MALFORMED URL"}));
 	}	
@@ -193,11 +236,17 @@ function decidePath(pathName,res){
 	break;
 	case pendingPath: checkPending(res,pathName);
 	break;
+	case fetchCustomerPath: fetchCustomer(res,pathName);
+	break;
+	case updateCustomerPath: updateCustomer(res,pathName);
+	break;
 	case '/bank': listBank(res,pathName);
 	break;
 	case '/bank/resolve': verifyAccount(res,pathName);
 	break;
 	case '/charge': chargeBankAccount(res,pathName);
+	break;
+	case '/customer': createCustomer(res,pathName);
 	break;
 	case '/charge/submit_otp': submitOTP(res,pathName);
 	break;
@@ -207,6 +256,7 @@ function decidePath(pathName,res){
 	break;
 	case '/charge/submit_phone': submitPhone(res,pathName);
 	break;
+	
 	default:res.end(JSON.stringify({"status":false,"message":"PATH UNSUPPORTED"}));
 	break;
 	}
@@ -598,3 +648,110 @@ req.end();
 
 }
 
+//make request to create customer
+function createCustomer(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"POST",
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
+const req = https.request('https://api.paystack.co/customer',options, (res) => {
+  data = "";
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+// Write data to request body
+req.write(createCustomerVar);
+req.end();
+
+
+
+}
+
+//make request to Paystack to fetch customer
+function fetchCustomer(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"GET",
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
+const req = https.request('https://api.paystack.co'+fetchCustomerPath,options, (res) => {
+  data = "";
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+req.end();
+
+}
+
+//make request to Paystack to update customer
+function updateCustomer(response,pathName){
+//options will be passed to the https instance
+	const options = {
+  method:"PUT",
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+  }
+};
+const req = https.request('https://api.paystack.co'+updateCustomerPath,options, (res) => {
+  data = "";
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+  //res.setEncoding('utf8');
+  res.on('data', (chunk) => {
+    data += chunk;
+    console.log(`BODY: ${data}`);
+  });
+  res.on('end', () => {
+    console.log('No more data in response.');
+    response.end(data);
+   
+  });
+});
+
+req.on('error', (e) => {
+  console.error(`problem with request: ${e.message}`);
+});
+
+// Write data to request body
+req.write(updateCustomerVar);
+req.end();
+
+}
