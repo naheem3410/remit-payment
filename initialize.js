@@ -90,6 +90,7 @@ var server = http.createServer(function(req,res){
 	else if(pathName.indexOf("/charge/") == 0){
 		console.log("EnteredPathVerify");
 		console.log(pathName);
+		//for OTP
 		if(pathName == "/charge/submit_otp"){
 		jsonOTP = '';
 		
@@ -105,13 +106,9 @@ var server = http.createServer(function(req,res){
     		//res.end(chargeData);
    
   		});
-		}else{
-		pendingPath = pathName;
-		decide(req,res,pathName);
 		}
-
-	}
-	else if(pathName == "/charge/submit_pin"){
+		//for Pin
+		else if(pathName == "/charge/submit_pin"){
 		jsonPin = '';
 		
 		console.log("PIN"+pathName);
@@ -127,6 +124,7 @@ var server = http.createServer(function(req,res){
    
   		});
 	}
+		//for Birthday
 	else if(pathName == "/charge/submit_birthday"){
 		jsonBirthday = '';
 		
@@ -143,6 +141,7 @@ var server = http.createServer(function(req,res){
    
   		});
 	}
+		//for Phone
 	else if(pathName == "/charge/submit_phone"){
 		jsonPhone = '';
 		
@@ -158,6 +157,12 @@ var server = http.createServer(function(req,res){
     		//res.end(chargeData);
    
   		});
+	}
+		else{
+		pendingPath = pathName;
+		decide(req,res,pathName);
+		}
+
 	}
 	else{
 	res.end(JSON.stringify({"status":false,"message":"MALFORMED URL"}));
