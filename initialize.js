@@ -188,12 +188,16 @@ var server = http.createServer(function(req,res){
 		console.log("EnteredPathCustomer");
 		console.log(pathName);
 		if(req.method == "GET"){
+		//set update path to empty string
+		updateCustomerPath = '';
 		fetchCustomerPath = pathName;
 		decide(req,res,pathName);
 		console.log('GETPARTR');
 		}
 		else if(req.method == "POST"){
 		console.log('POSTPARTR');
+		//set fetch customer path to empty string
+		fetchCustomerPath = '';
 		updateCustomerVar = '';
 		updateCustomerPath = pathName;
 		console.log("CustomerUpdate"+updateCustomerVar);
@@ -694,7 +698,6 @@ function fetchCustomer(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Content-Type': 'application/json',
     'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
   }
 };
