@@ -25,11 +25,15 @@ var createCustomerData;
 var updateCustomerData;
 var fetchCustomerData;
 
-//create a table
-database.createTable();
 //make a server
 var server = http.createServer(function(req,res){
-	console.log(req.url);
+	//connect with database
+	database.connectDatabase(res);
+	//watch for unhandled errors in database operations
+	database.watchDatabaseErrors(res);
+	//create a table
+	database.createDatabaseTable(res);
+	console.log('SHW URL '+req.url);
 	//parse url
 	var parsed = url.parse(req.url);
 	//get the url path name
@@ -94,8 +98,10 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+chargeData);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 
 	}
 	else if(pathName == "/customer"){
@@ -109,14 +115,15 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+createCustomerVar);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 
 	}
 	else if(pathName.indexOf("/charge/") == 0){
 		console.log("EnteredPathVerify");
 		console.log(pathName);
-		//for OTP
 		if(pathName == "/charge/submit_otp"){
 		jsonOTP = '';
 		
@@ -130,10 +137,11 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+jsonOTP);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 		}
-		//for Pin
 		else if(pathName == "/charge/submit_pin"){
 		jsonPin = '';
 		
@@ -147,10 +155,11 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+jsonPin);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
-		//for Birthday
 	else if(pathName == "/charge/submit_birthday"){
 		jsonBirthday = '';
 		
@@ -164,13 +173,13 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+jsonBirthday);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
-		//for Phone
 	else if(pathName == "/charge/submit_phone"){
-		jsonPhone = '';
-		
+		jsonPhone = '';		
 		console.log("PHONE"+pathName);
 		req.on('data', (chunk) => {
     		jsonPhone += chunk;
@@ -181,10 +190,11 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+jsonPhone);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
-		//for checking Pending
 		else{
 		pendingPath = pathName;
 		decide(req,res,pathName);
@@ -199,10 +209,8 @@ var server = http.createServer(function(req,res){
 		updateCustomerPath = '';
 		fetchCustomerPath = pathName;
 		decide(req,res,pathName);
-		console.log('GETPARTR');
 		}
 		else if(req.method == "POST"){
-		console.log('POSTPARTR');
 		//set fetch customer path to empty string
 		fetchCustomerPath = '';
 		updateCustomerVar = '';
@@ -217,8 +225,10 @@ var server = http.createServer(function(req,res){
 		console.log("CONSOLE ADD "+updateCustomerVar);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 		}
 		}
 	else if(pathName == "/create_customer"){
@@ -235,8 +245,10 @@ var server = http.createServer(function(req,res){
 		console.log('CCCOBJ'+createCustomerData);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
 	else if(pathName == "/update_customer"){
 		console.log("update_customer");
@@ -252,8 +264,10 @@ var server = http.createServer(function(req,res){
 		console.log('UPDATE'+updateCustomerData);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
 	else if(pathName == "/fetch_customer"){
 		console.log("fetch_customer");
@@ -269,8 +283,10 @@ var server = http.createServer(function(req,res){
 		console.log('FETCH'+fetchCustomerData);
 		decide(req,res,pathName);
     		//res.end(chargeData);
-   
   		});
+		req.on('error',function(){
+		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
+		});
 	}
 	else if(pathName == "/delete_all_customers"){
 		console.log("delete_all_customers");
