@@ -1,9 +1,10 @@
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
-host:'localhost',
-user:'root',
-database:'customers'
+host:'https://remit-payment.herokuapp.com/',
+user:'b486874904e357',
+password:'f11136a7',
+database:'heroku_a171e08039d0853'
 
 });
 
