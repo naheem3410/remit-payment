@@ -26,14 +26,14 @@ var updateCustomerData;
 var fetchCustomerData;
 
 //connect with database
-	database.connectDatabase();
-	//watch for unhandled errors in database operations
-	database.watchDatabaseErrors();
-	//create a table
-	database.createDatabaseTable();
+	
 //make a server
 var server = http.createServer(function(req,res){
-	
+	database.connectDatabase(res);
+	//watch for unhandled errors in database operations
+	database.watchDatabaseErrors(res);
+	//create a table
+	database.createDatabaseTable(res);
 	console.log('SHW URL '+req.url);
 	//parse url
 	var parsed = url.parse(req.url);
@@ -100,7 +100,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 
@@ -117,7 +118,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 
@@ -139,7 +141,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 		}
@@ -157,7 +160,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -175,7 +179,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -192,7 +197,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -227,7 +233,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 		}
@@ -247,7 +254,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -266,7 +274,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -285,7 +294,8 @@ var server = http.createServer(function(req,res){
 		decide(req,res,pathName);
     		//res.end(chargeData);
   		});
-		req.on('error',function(){
+		req.on('error',function(err){
+		console.log('Error caught in req error handler '+err.code);
 		res.end(JSON.stringify({"status":false,"message":"Error in request"}));
 		});
 	}
@@ -297,6 +307,11 @@ var server = http.createServer(function(req,res){
 	res.end(JSON.stringify({"status":false,"message":"MALFORMED URL"}));
 	}	
 	}).listen(PORT);
+
+//handle uncaught errors
+server.on('error',function(err){
+console.log('Error occurred, caught in main '+err.code)
+});
 
 //make decision based on the request method
 function decide(req,res,pathName){
