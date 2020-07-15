@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var db = mysql.createConnection({
-host:process.env.DATABASE_URL,
-user:'b486874904e357',
-password:'f11136a7',
-database:'heroku_a171e08039d0853'
+host:'us-cdbr-east-02.cleardb.com',
+user:'b9e76c0f296224',
+password:'78abf7fc',
+database:'heroku_3555ff1f7e3a879'
 
 });
 
