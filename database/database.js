@@ -8,7 +8,7 @@ database:'heroku_3555ff1f7e3a879'
 
 });
 
-concole.log('DB_URL ',process.env.DATABASE_URL);
+console.log('DB_URL ',process.env.DATABASE_URL);
 //function connect with database
 exports.connectDatabase = function(){
 db.connect(function(err){
