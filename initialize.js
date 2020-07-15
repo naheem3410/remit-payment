@@ -25,15 +25,14 @@ var createCustomerData;
 var updateCustomerData;
 var fetchCustomerData;
 
-//connect with database
-	
+	//connect with database
+	database.connectDatabase();
+	//watch for unhandled errors in database operations
+	database.watchDatabaseErrors();
+	//create a table
+	database.createDatabaseTable();
 //make a server
 var server = http.createServer(function(req,res){
-	database.connectDatabase(res);
-	//watch for unhandled errors in database operations
-	database.watchDatabaseErrors(res);
-	//create a table
-	database.createDatabaseTable(res);
 	console.log('SHW URL '+req.url);
 	//parse url
 	var parsed = url.parse(req.url);
