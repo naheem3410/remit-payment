@@ -8,15 +8,25 @@ database:'heroku_a171e08039d0853'
 
 });
 
+//function connect with database
+exports.connectDatabase = function(res){
 db.connect(function(err){
 if(err){
 console.log(err.code);
+res.end(JSON.stringify({"status":false,"message":"Cannot connect to database"}));
 }
 });
+}
 
+//function watch for any errors concerning the use of the database
+exports.watchDatabaseErrors = function(res){
 db.on('error',function(err){
 console.log(err.code);
+res.end(JSON.stringify({"status":false,"message":"Error in database operation"}));
 });
+
+}
+
 //retrieve a user
 var tableSelect = "SELECT * FROM customers WHERE email = ?";
 //query for customer data insertion
@@ -27,15 +37,19 @@ var tableUpdate = "UPDATE customers SET paid = ?, trial = ? WHERE email = ?"
 tableDeleteAll = "DELETE FROM customers";
 //query for table creation
 var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NULL,phone VARCHAR(15) NOT NULL,paid INT NOT NULL,trial INT NOT NULL,PRIMARY KEY (email))";
-//create database table
+//function create database table
+exports.createDatabaseTable = function(res){
 exports.createTable = function(){
 db.query(tableQuery,function(err){
 if(err){
-console.log('Error creating table');
-console.log(err);
+console.log(err.code);
+res.end(JSON.stringify({"status":false,"message":"Cannot create database table"}));
 }
+else{
 console.log('Server started...');
+}
 });
+}
 }
 
 //insert data into the table
