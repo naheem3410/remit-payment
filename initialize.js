@@ -21,6 +21,9 @@ var createCustomerVar;
 var updateCustomerVar;
 var fetchCustomerPath;
 var updateCustomerPath;
+var createCustomerData;
+var updateCustomerData;
+var fetchCustomerData;
 
 //create a table
 database.createTable();
@@ -218,6 +221,61 @@ var server = http.createServer(function(req,res){
   		});
 		}
 		}
+	else if(pathName == "/create_customer"){
+		console.log("create_customer");
+		var allData = '';
+		req.on('data', (chunk) => {
+    		allData += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+allData);
+		createCustomerData = JSON.parse(allData);
+		console.log('CCCOBJ'+createCustomerData);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
+   
+  		});
+	}
+	else if(pathName == "/update_customer"){
+		console.log("update_customer");
+		var allData = '';
+		req.on('data', (chunk) => {
+    		allData += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+allData);
+		updateCustomerData = JSON.parse(allData);
+		console.log('UPDATE'+updateCustomerData);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
+   
+  		});
+	}
+	else if(pathName == "/fetch_customer"){
+		console.log("fetch_customer");
+		var allData = '';
+		req.on('data', (chunk) => {
+    		allData += chunk;
+    		console.log(`BODY: ${data}`);
+  		});
+  		req.on('end', () => {
+    		console.log('No more data in request.');
+		console.log("CONSOLE ADD "+allData);
+		fetchCustomerData = JSON.parse(allData);
+		console.log('FETCH'+fetchCustomerData);
+		decide(req,res,pathName);
+    		//res.end(chargeData);
+   
+  		});
+	}
+	else if(pathName == "/delete_all_customers"){
+		console.log("delete_all_customers");
+		decide(req,res,pathName);
+	}
 	else{
 	res.end(JSON.stringify({"status":false,"message":"MALFORMED URL"}));
 	}	
@@ -266,7 +324,14 @@ function decidePath(pathName,res){
 	break;
 	case '/charge/submit_phone': submitPhone(res,pathName);
 	break;
-	
+	case '/create_customer': customerCreate(createCustomerData.email,createCustomerData.phone,createCustomerData.paid,createCustomerData.trial,res);
+	break;
+	case '/update_customer': customerUpdate(updateCustomerData.paid,updateCustomerData.trial,updateCustomerData.email,res);
+	break;
+	case '/fetch_customer': customerFetch(fetchCustomerData.email,res);
+	break;
+	case '/delete_all_customers': customerDeleteAll(res);
+	break;
 	default:res.end(JSON.stringify({"status":false,"message":"PATH UNSUPPORTED"}));
 	break;
 	}
@@ -763,4 +828,20 @@ req.on('error', (e) => {
 req.write(updateCustomerVar);
 req.end();
 
+}
+//create a customer on my server
+function customerCreate(email,phone,paid,trial,res){
+database.insertCustomer(email,phone,paid,trial,res);
+}
+//update a customer on my server
+function customerUpdate(paid,trial,email,res){
+database.updateCustomer(paid,trial,email,res);
+}
+//fetch a customer on my server
+function customerFetch(email,res){
+database.fetchCustomer(email,res);
+}
+//delete all customers on my server
+function customerDeleteAll(res){
+database.deleteAllCustomers(res);
 }
