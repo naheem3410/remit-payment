@@ -2,6 +2,7 @@
 
 var http = require('http');
 var https = require('https');
+var database = require('./database/database.js');
 var url = require('url');
 const PORT = process.env.PORT || 5000
 var post;
