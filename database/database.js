@@ -10,20 +10,20 @@ database:'heroku_3555ff1f7e3a879'
 
 console.log('DB_URL ',process.env.DATABASE_URL);
 //function connect with database
-exports.connectDatabase = function(){
+exports.connectDatabase = function(res){
 db.connect(function(err){
 if(err){
 console.log(err.code);
-//res.end(JSON.stringify({"status":false,"message":"Cannot connect to database"}));
+res.end(JSON.stringify({"status":false,"message":"Cannot connect to database"}));
 }
 });
 }
 
 //function watch for any errors concerning the use of the database
-exports.watchDatabaseErrors = function(){
+exports.watchDatabaseErrors = function(res){
 db.on('error',function(err){
 console.log(err.code);
-//res.end(JSON.stringify({"status":false,"message":"Error in database operation"}));
+res.end(JSON.stringify({"status":false,"message":"Error in database operation"}));
 });
 
 }
@@ -39,12 +39,12 @@ tableDeleteAll = "DELETE FROM customers";
 //query for table creation
 var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NULL,phone VARCHAR(15) NOT NULL,paid INT NOT NULL,trial INT NOT NULL,PRIMARY KEY (email))";
 //function create database table
-exports.createDatabaseTable = function(){
+exports.createDatabaseTable = function(res){
 exports.createTable = function(){
 db.query(tableQuery,function(err){
 if(err){
 console.log(err.code);
-//res.end(JSON.stringify({"status":false,"message":"Cannot create database table"}));
+res.end(JSON.stringify({"status":false,"message":"Cannot create database table"}));
 }
 else{
 console.log('Server started...');
