@@ -30,7 +30,10 @@ var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NU
 //create database table
 exports.createTable = function(){
 db.query(tableQuery,function(err){
-if(err)throw err;
+if(err){
+console.log('Error creating table');
+console.log(err);
+}
 console.log('Server started...');
 });
 }
