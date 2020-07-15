@@ -40,7 +40,6 @@ tableDeleteAll = "DELETE FROM customers";
 var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NULL,phone VARCHAR(15) NOT NULL,paid INT NOT NULL,trial INT NOT NULL,PRIMARY KEY (email))";
 //function create database table
 exports.createDatabaseTable = function(){
-exports.createTable = function(){
 db.query(tableQuery,function(err){
 if(err){
 console.log(err.code);
@@ -50,7 +49,6 @@ else{
 console.log('Server started...');
 }
 });
-}
 }
 
 //insert data into the table
