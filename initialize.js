@@ -21,6 +21,9 @@ var createCustomerVar;
 var updateCustomerVar;
 var fetchCustomerPath;
 var updateCustomerPath;
+
+//create a table
+database.createTable();
 //make a server
 var server = http.createServer(function(req,res){
 	console.log(req.url);
