@@ -31,7 +31,7 @@ console.log(err.code);
 //retrieve a user
 var tableSelect = "SELECT * FROM customers WHERE email = ?";
 //retrieve all users
-var selectAll = "SELECT * FROM customers;
+var selectAll = "SELECT * FROM customers";
 //query for customer data insertion
 var tableInsert = "INSERT INTO customers (email,phone,paid,trial) VALUES (?,?,?,?)";
 //query to update customer
