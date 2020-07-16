@@ -362,7 +362,7 @@ function decidePath(pathName,res){
 	break;
 	case '/fetch_customer': customerFetch(fetchCustomerData.email,res);
 	break;
-	case '/fetch_all_customers': fetchAllCustomers();
+	case '/fetch_all_customers': fetchAllCustomers(res);
 	break;
 	case '/delete_all_customers': customerDeleteAll(res);
 	break;
@@ -876,8 +876,8 @@ function customerFetch(email,res){
 database.fetchCustomer(email,res);
 }
 //fetch a customer on my server
-function fetchAllCustomers(){
-database.fetchAllCustomers();
+function fetchAllCustomers(res){
+database.fetchAllCustomers(res);
 }
 //delete all customers on my server
 function customerDeleteAll(res){
