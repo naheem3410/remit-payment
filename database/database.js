@@ -150,7 +150,7 @@ res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
 //retrieves all users
 
 	//function to retrieve all users
-exports.fetchAllCustomers = function(){
+exports.fetchAllCustomers = function(res){
 //gets a connection
 pool.getConnection(function(err,connection){
 if(err){
