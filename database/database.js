@@ -80,7 +80,7 @@ return;
 }
 console.log('Customer inserted...');
 res.end(JSON.stringify({"status":true,"message":"Customer inserted"}));
-/release the connection
+//release the connection
   connection.release();
  if(error){
   console.log(error);
