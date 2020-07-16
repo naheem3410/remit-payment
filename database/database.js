@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var db = mysql.createConnection({
+var pool = mysql.createPool({
 host:'us-cdbr-east-02.cleardb.com',
 user:'b9e76c0f296224',
 password:'78abf7fc',
@@ -8,7 +8,7 @@ database:'heroku_3555ff1f7e3a879'
 
 });
 
-console.log('DB_URL ',process.env.DATABASE_URL);
+/*console.log('DB_URL ',process.env.DATABASE_URL);
 //function connect with database
 exports.connectDatabase = function(){
 db.connect(function(err){
@@ -17,16 +17,16 @@ console.log(err.code);
 //res.end(JSON.stringify({"status":false,"message":"Cannot connect to database"}));
 }
 });
-}
+}*/
 
-//function watch for any errors concerning the use of the database
-exports.watchDatabaseErrors = function(){
-db.on('error',function(err){
+/*//function watch for any errors concerning the use of the database
+//exports.watchDatabaseErrors = function(){
+pool.on('error',function(err){
 console.log(err.code);
 //res.end(JSON.stringify({"status":false,"message":"Error in database operation"}));
 });
 
-}
+//}*/
 
 //retrieve a user
 var tableSelect = "SELECT * FROM customers WHERE email = ?";
@@ -40,51 +40,95 @@ tableDeleteAll = "DELETE FROM customers";
 var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NULL,phone VARCHAR(15) NOT NULL,paid INT NOT NULL,trial INT NOT NULL,PRIMARY KEY (email))";
 //function create database table
 exports.createDatabaseTable = function(){
-db.query(tableQuery,function(err){
+pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+connection.query(tableQuery,function(err){
 if(err){
 console.log(err.code);
 //res.end(JSON.stringify({"status":false,"message":"Cannot create database table"}));
+return;
 }
-else{
-console.log('Server started...');
+console.log('Table created...');
+});
+  //release connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
 }
 });
 }
 
 //insert data into the table
 exports.insertCustomer=function(email,phone,paid,trial,res){
-//insert if user is absent
-db.query(tableInsert,[email,phone,paid,trial],function(err){
+ //get a connection from the pool
+	pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+    //insert if user is absent
+connection.query(tableInsert,[email,phone,paid,trial],function(err){
 //if(err)throw err;
 if(err){
 console.log("Error inserting");
 res.end(JSON.stringify({"status":false,"message":"Error insering"}));
-}else{
+return;
+}
 console.log('Customer inserted...');
 res.end(JSON.stringify({"status":true,"message":"Customer inserted"}));
+});
+  //release the connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
 }
 });
 }
 
 //query to update customer
 exports.updateCustomer=function(paid,trial,email,res){
-db.query(tableUpdate,[paid,trial,email],function(err){
+  //gets a connection from the pool
+	pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+connection.query(tableUpdate,[paid,trial,email],function(err){
 if(err){
 console.log('Error updating...');
 res.end(JSON.stringify({"status":false,"message":"Customer not updated"}));
-}else{
+return;
+}
 console.log('Customer updated...');
 res.end(JSON.stringify({"status":true,"message":"Customer updated"}));
+});
+  //release the connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
 }
 });
 }
 //function to retrieve a user
 exports.fetchCustomer = function(email,res){
-db.query(tableSelect,[email],function(err,rows,fields){
+//gets a connection
+pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+connection.query(tableSelect,[email],function(err,rows,fields){
 if(err){
 console.log('Customer not retrieved...');
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
-}else{
+return;
+}
 if(rows.length > 0){//if record is present
 console.log('Customer retrievedaaa...'+rows.length);
 console.log('Customer retrieved...'+rows);
@@ -92,19 +136,38 @@ res.end(JSON.stringify({"status":true,"paid":rows[0].paid,"trial":rows[0].trial,
 }else{
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
 }
+});
+  //release the connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
 }
 });
 }
 
 //query to delete the table
 exports.deleteAllCustomers=function(res){
-db.query(tableDeleteAll,function(err){
+//get a connection from the pool
+pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+connection.query(tableDeleteAll,function(err){
 if(err){
 console.log('Customers not deleted...');
 res.end(JSON.stringify({"status":false,"message":"Customers not retrieved"}));
-}else{
+return;
+}
 console.log('Customers deleted...');
 res.end(JSON.stringify({"status":true,"message":"Customers deleted"}));
+});
+  //release the connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
 }
 });
 }
