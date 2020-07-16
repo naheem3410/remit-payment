@@ -299,6 +299,10 @@ var server = http.createServer(function(req,res){
 		console.log("delete_all_customers");
 		decide(req,res,pathName);
 	}
+	else if(pathName == "/fetch_all_customers"){
+		console.log("fetch_all_customers");
+		decide(req,res,pathName);
+	}
 	else{
 	res.end(JSON.stringify({"status":false,"message":"MALFORMED URL"}));
 	}	
@@ -357,6 +361,8 @@ function decidePath(pathName,res){
 	case '/update_customer': customerUpdate(updateCustomerData.paid,updateCustomerData.trial,updateCustomerData.email,res);
 	break;
 	case '/fetch_customer': customerFetch(fetchCustomerData.email,res);
+	break;
+	case '/fetch_all_customers': fetchAllCustomers();
 	break;
 	case '/delete_all_customers': customerDeleteAll(res);
 	break;
@@ -868,6 +874,10 @@ database.updateCustomer(paid,trial,email,res);
 //fetch a customer on my server
 function customerFetch(email,res){
 database.fetchCustomer(email,res);
+}
+//fetch a customer on my server
+function fetchAllCustomers(){
+database.fetchAllCustomers();
 }
 //delete all customers on my server
 function customerDeleteAll(res){
