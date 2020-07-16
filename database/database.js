@@ -45,20 +45,20 @@ if(err){
   console.log(err);
   return;
 }
-connection.query(tableQuery,function(err){
-if(err){
-console.log(err.code);
+connection.query(tableQuery,function(error){
+if(error){
+console.log(error.code);
 //res.end(JSON.stringify({"status":false,"message":"Cannot create database table"}));
 return;
 }
 console.log('Table created...');
-});
-  //release connection
+//release connection
   connection.release();
  if(error){
   console.log(error);
   return;
 }
+});
 });
 }
 
@@ -71,22 +71,22 @@ if(err){
   return;
 }
     //insert if user is absent
-connection.query(tableInsert,[email,phone,paid,trial],function(err){
+connection.query(tableInsert,[email,phone,paid,trial],function(error){
 //if(err)throw err;
-if(err){
+if(error){
 console.log("Error inserting");
 res.end(JSON.stringify({"status":false,"message":"Error insering"}));
 return;
 }
 console.log('Customer inserted...');
 res.end(JSON.stringify({"status":true,"message":"Customer inserted"}));
-});
-  //release the connection
+/release the connection
   connection.release();
  if(error){
   console.log(error);
   return;
 }
+});
 });
 }
 
@@ -98,21 +98,21 @@ if(err){
   console.log(err);
   return;
 }
-connection.query(tableUpdate,[paid,trial,email],function(err){
-if(err){
+connection.query(tableUpdate,[paid,trial,email],function(error){
+if(error){
 console.log('Error updating...');
 res.end(JSON.stringify({"status":false,"message":"Customer not updated"}));
 return;
 }
 console.log('Customer updated...');
 res.end(JSON.stringify({"status":true,"message":"Customer updated"}));
-});
-  //release the connection
+//release the connection
   connection.release();
  if(error){
   console.log(error);
   return;
 }
+});
 });
 }
 //function to retrieve a user
@@ -123,8 +123,8 @@ if(err){
   console.log(err);
   return;
 }
-connection.query(tableSelect,[email],function(err,rows,fields){
-if(err){
+connection.query(tableSelect,[email],function(error,rows,fields){
+if(error){
 console.log('Customer not retrieved...');
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
 return;
@@ -136,13 +136,13 @@ res.end(JSON.stringify({"status":true,"paid":rows[0].paid,"trial":rows[0].trial,
 }else{
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
 }
-});
-  //release the connection
+//release the connection
   connection.release();
  if(error){
   console.log(error);
   return;
 }
+});
 });
 }
 
@@ -154,20 +154,20 @@ if(err){
   console.log(err);
   return;
 }
-connection.query(tableDeleteAll,function(err){
-if(err){
+connection.query(tableDeleteAll,function(error){
+if(error){
 console.log('Customers not deleted...');
 res.end(JSON.stringify({"status":false,"message":"Customers not retrieved"}));
 return;
 }
 console.log('Customers deleted...');
 res.end(JSON.stringify({"status":true,"message":"Customers deleted"}));
-});
-  //release the connection
+//release the connection
   connection.release();
  if(error){
   console.log(error);
   return;
 }
+});
 });
 }
