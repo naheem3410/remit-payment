@@ -30,12 +30,14 @@ console.log(err.code);
 
 //retrieve a user
 var tableSelect = "SELECT * FROM customers WHERE email = ?";
+//retrieve all users
+var selectAll = "SELECT * FROM customers;
 //query for customer data insertion
 var tableInsert = "INSERT INTO customers (email,phone,paid,trial) VALUES (?,?,?,?)";
 //query to update customer
 var tableUpdate = "UPDATE customers SET paid = ?, trial = ? WHERE email = ?"
 //query to delete everything
-tableDeleteAll = "DELETE FROM customers";
+var tableDeleteAll = "DELETE FROM customers";
 //query for table creation
 var tableQuery = "CREATE TABLE IF NOT EXISTS customers (email VARCHAR(30) NOT NULL,phone VARCHAR(15) NOT NULL,paid INT NOT NULL,trial INT NOT NULL,PRIMARY KEY (email))";
 //function create database table
@@ -135,6 +137,40 @@ console.log('Customer retrieved...'+rows);
 res.end(JSON.stringify({"status":true,"paid":rows[0].paid,"trial":rows[0].trial,"message":"Customer retrieved"}));
 }else{
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
+}
+//release the connection
+  connection.release();
+ if(error){
+  console.log(error);
+  return;
+}
+});
+});
+}
+//retrieves all users
+
+	//function to retrieve all users
+exports.fetchAllCustomers = function(){
+//gets a connection
+pool.getConnection(function(err,connection){
+if(err){
+  console.log(err);
+  return;
+}
+connection.query(selectAll,[email],function(error,rows,fields){
+if(error){
+console.log('Customers not retrieved...');
+res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
+return;
+}
+if(rows.length > 0){//if record is present
+console.log('Customer retrievedaaa...'+rows.length);
+console.log('Customer retrieved...'+rows);
+for(var index in rows){
+console.log('Email '+rows[index].email+' Phone '+rows[index].phone+' Paid '+rows[index].paid+' Trial '+rows[index].trial);
+}
+}else{
+res.end(JSON.stringify({"status":false,"message":"Customers not retrieved"}));
 }
 //release the connection
   connection.release();
