@@ -26,6 +26,8 @@ var updateCustomerData;
 var fetchCustomerData;
 
 	
+//create a table
+database.createDatabaseTable();
 //make a server
 var server = http.createServer(function(req,res){
 	console.log('SHW URL '+req.url);
@@ -235,12 +237,6 @@ var server = http.createServer(function(req,res){
 		}
 	else if(pathName == "/create_customer"){
 		console.log("create_customer");
-		//connect with database
-		database.connectDatabase();
-		//watch for unhandled errors in database operations
-		database.watchDatabaseErrors();
-		//create a table
-		database.createDatabaseTable();
 		var allData = '';
 		req.on('data', (chunk) => {
     		allData += chunk;
