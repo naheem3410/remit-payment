@@ -157,7 +157,7 @@ if(err){
   console.log(err);
   return;
 }
-connection.query(selectAll,[email],function(error,rows,fields){
+connection.query(selectAll,function(error,rows,fields){
 if(error){
 console.log('Customers not retrieved...');
 res.end(JSON.stringify({"status":false,"message":"Customer not retrieved"}));
