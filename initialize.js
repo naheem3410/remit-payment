@@ -376,7 +376,7 @@ function initializeTransaction(response){
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 
@@ -414,7 +414,7 @@ function verifyTransaction(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 
@@ -449,7 +449,7 @@ function listBank(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 
@@ -486,7 +486,7 @@ function verifyAccount(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 
@@ -524,7 +524,7 @@ function chargeBankAccount(response,pathName){
 	const options = {
   method:"POST",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13',
     'Content-Type': 'application/json'
   }
 };
@@ -564,7 +564,7 @@ function submitOTP(response,pathName){
 	const options = {
   method:"POST",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13',
     'Content-Type':'application/json'
   }
 };
@@ -605,7 +605,7 @@ function submitPIN(response,pathName){
 	const options = {
   method:"POST",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13',
     'Content-Type':'application/json'
   }
 };
@@ -646,7 +646,7 @@ function submitBirthday(response,pathName){
 	const options = {
   method:"POST",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13',
     'Content-Type':'application/json'
   }
 };
@@ -686,7 +686,7 @@ function submitPhone(response,pathName){
 	const options = {
   method:"POST",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb',
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13',
     'Content-Type':'application/json'
   }
 };
@@ -727,7 +727,7 @@ function checkPending(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 
@@ -764,7 +764,7 @@ function createCustomer(response,pathName){
   method:"POST",
   headers: {
     'Content-Type': 'application/json',
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 const req = https.request('https://api.paystack.co/customer',options, (res) => {
@@ -801,7 +801,7 @@ function fetchCustomer(response,pathName){
 	const options = {
   method:"GET",
   headers: {
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 const req = https.request('https://api.paystack.co'+fetchCustomerPath,options, (res) => {
@@ -835,7 +835,7 @@ function updateCustomer(response,pathName){
   method:"PUT",
   headers: {
     'Content-Type': 'application/json',
-    'Authorization':'Bearer sk_test_3c01e91aad9edc6566860fabb83deade6385fadb'
+    'Authorization':'Bearer sk_live_4d45be473342c8ecab6fa29e7daa961878ce8a13'
   }
 };
 const req = https.request('https://api.paystack.co'+updateCustomerPath,options, (res) => {
